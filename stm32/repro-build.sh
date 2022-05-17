@@ -52,6 +52,11 @@ else
 fi
 cd ../stm32
 
+if [ -z "$SOURCE_DATE_EPOCH" ]; then
+    TAG_NAME=$(git tag -l "*$VERSION_STRING")
+    export SOURCE_DATE_EPOCH=$(git show -s --format=%at "$TAG_NAME^{commit}")
+fi
+
 $MAKE setup
 $MAKE DEBUG_BUILD=0 all
 $MAKE $TARGETS
